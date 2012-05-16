@@ -1,0 +1,14 @@
+#####README will be updated soon#####
+ 
+Requirements:
+1. NVIDIA's Proprietary Drivers 
+2. Python 3
+3. Coolbits 5 in xorg.conf file 
+ 
+Priorities:
+
+    Clean up the code
+    Make it more user-friendly
+    Make it easier to change polling time
+    Adding a GUI 
+
