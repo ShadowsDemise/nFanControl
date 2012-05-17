@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 #
-
-#Copyright 2011-2012 Nicholas Polach
+#nFanControl.py
+#
+#Copyright (C) 2011-2012 Nicholas Polach <npolach@hotmail.com>
 #
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -17,12 +18,15 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import os, subprocess, time
+import os
+import subprocess
+import time
 
 class FanControl:
 
 	def __init__(self):
-
+		
+		# Loads settings if found and creates settings if not found
 		try:
 			SettingsFile = open('settings.txt', 'r')
 		except IOError:
@@ -33,6 +37,7 @@ class FanControl:
 
 	def EnableFanSettings(SettingsFile):
 
+		# Enables manual control of GPU fans
 		os.system('nvidia-settings -a [gpu:0]/GPUFanControlState=1')
 		os.system('nvidia-settings -a [gpu:1]/GPUFanControlState=1')
 		os.system('nvidia-settings -a [gpu:2]/GPUFanControlState=1')
@@ -41,11 +46,11 @@ class FanControl:
 		FanControl.ReadFile(SettingsFile)
 
 	def ReadFile(SettingsFile):
-
+		
 		loop = 'yes'
-
 		while loop == 'yes':
-			
+
+			# Gets the temperature of each GPU
 			try:
 				temp0 = int(subprocess.getoutput('nvidia-settings -q "[gpu:0]/GPUCoreTemp" -t'))
 			except:
@@ -62,9 +67,10 @@ class FanControl:
 				temp3 = int(subprocess.getoutput('nvidia-settings -q "[gpu:3]/GPUCoreTemp" -t'))
 			except: 
 				pass
+
 			TempFile = open('settings.txt', 'r') 
 			
-			
+			# Sets the fan speed for the current GPU temperature
 			for line in TempFile.readlines():
 				line = tuple(line.split())
 				if int(line[0]) <= temp0 <= int(line[1]):			
@@ -95,7 +101,8 @@ class FanControl:
 				pass				
 			
 			TempFile.close() 
-
+			
+			# Stops program for 30 seconds
 			time.sleep(30)			
 
 
